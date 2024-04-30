@@ -73,8 +73,9 @@ namespace Youtube.Video.Downloader
                 int i = 0; 
                 i++;
                 string titulo = jsonresponse.title;
-                var temp_segundos = TimeSpan.FromSeconds(jsonresponse.lengthSeconds);
-                var minutos = temp_segundos.Minutes;
+                var temp_segundos = jsonresponse.lengthSeconds;
+                Convert.ToDouble(temp_segundos);
+                var minutos = TimeSpan.FromSeconds(temp_segundos);
                 string datapublic = jsonresponse.publishedDate.ToString();
                 Grid_musicas.Rows.Add(i, titulo, link, minutos);
                 txt_link.Text = null;
