@@ -28,10 +28,8 @@ namespace Youtube.Video.Downloader
                 using var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
                 var responsebody = await response.Content.ReadAsStringAsync();
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 dynamic jsonresponse = JsonConvert.DeserializeObject<dynamic>(responsebody);
                 string urlaudio = jsonresponse.dlink;
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 using var httpClient = new HttpClient();
                 {
                     var audiolink = await httpClient.GetStreamAsync(urlaudio);
@@ -73,8 +71,7 @@ namespace Youtube.Video.Downloader
                 int i = 0; 
                 i++;
                 string titulo = jsonresponse.title;
-                var temp_segundos = jsonresponse.lengthSeconds;
-                Convert.ToDouble(temp_segundos);
+                var temp_segundos = Convert.ToDouble(jsonresponse.lengthSeconds);
                 var minutos = TimeSpan.FromSeconds(temp_segundos);
                 string datapublic = jsonresponse.publishedDate.ToString();
                 Grid_musicas.Rows.Add(i, titulo, link, minutos);
