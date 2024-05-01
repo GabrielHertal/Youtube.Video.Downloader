@@ -116,7 +116,7 @@
             btn_addlist.TabIndex = 3;
             btn_addlist.Text = "Adicionar a Lista";
             btn_addlist.UseVisualStyleBackColor = true;
-            btn_addlist.Click += Btn_addlist_Click;
+            btn_addlist.Click += btn_addlist_Click;
             // 
             // btn_excluir
             // 
@@ -126,7 +126,6 @@
             btn_excluir.TabIndex = 4;
             btn_excluir.Text = "Excluir da Lista";
             btn_excluir.UseVisualStyleBackColor = true;
-            btn_excluir.Click += btn_excluir_Click;
             // 
             // progressBar1
             // 
