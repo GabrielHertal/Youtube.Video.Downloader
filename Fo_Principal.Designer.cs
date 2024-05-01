@@ -32,13 +32,14 @@
             txt_link = new TextBox();
             btn_download = new Button();
             Grid_musicas = new DataGridView();
-            ID = new DataGridViewTextBoxColumn();
-            Titulo = new DataGridViewTextBoxColumn();
-            Link = new DataGridViewTextBoxColumn();
-            Tempo = new DataGridViewTextBoxColumn();
             btn_addlist = new Button();
             btn_excluir = new Button();
             progressBar1 = new ProgressBar();
+            cbx_playlist = new CheckBox();
+            ID = new DataGridViewTextBoxColumn();
+            Titulo = new DataGridViewTextBoxColumn();
+            linkorId_video = new DataGridViewTextBoxColumn();
+            Tempo = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)Grid_musicas).BeginInit();
             SuspendLayout();
             // 
@@ -46,7 +47,7 @@
             // 
             txt_link.Location = new Point(12, 29);
             txt_link.Name = "txt_link";
-            txt_link.Size = new Size(793, 23);
+            txt_link.Size = new Size(419, 23);
             txt_link.TabIndex = 0;
             // 
             // btn_download
@@ -72,41 +73,13 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             Grid_musicas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             Grid_musicas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Grid_musicas.Columns.AddRange(new DataGridViewColumn[] { ID, Titulo, Link, Tempo });
+            Grid_musicas.Columns.AddRange(new DataGridViewColumn[] { ID, Titulo, linkorId_video, Tempo });
             Grid_musicas.Location = new Point(12, 121);
             Grid_musicas.Name = "Grid_musicas";
             Grid_musicas.ReadOnly = true;
             Grid_musicas.RowTemplate.Height = 25;
             Grid_musicas.Size = new Size(793, 334);
             Grid_musicas.TabIndex = 2;
-            // 
-            // ID
-            // 
-            ID.HeaderText = "ID";
-            ID.Name = "ID";
-            ID.ReadOnly = true;
-            ID.Width = 40;
-            // 
-            // Titulo
-            // 
-            Titulo.HeaderText = "Título Música";
-            Titulo.Name = "Titulo";
-            Titulo.ReadOnly = true;
-            Titulo.Width = 550;
-            // 
-            // Link
-            // 
-            Link.HeaderText = "Link";
-            Link.Name = "Link";
-            Link.ReadOnly = true;
-            Link.Visible = false;
-            // 
-            // Tempo
-            // 
-            Tempo.HeaderText = "Tempo";
-            Tempo.Name = "Tempo";
-            Tempo.ReadOnly = true;
-            Tempo.Width = 160;
             // 
             // btn_addlist
             // 
@@ -134,11 +107,50 @@
             progressBar1.Size = new Size(793, 23);
             progressBar1.TabIndex = 5;
             // 
+            // cbx_playlist
+            // 
+            cbx_playlist.AutoSize = true;
+            cbx_playlist.Location = new Point(448, 33);
+            cbx_playlist.Name = "cbx_playlist";
+            cbx_playlist.Size = new Size(136, 19);
+            cbx_playlist.TabIndex = 6;
+            cbx_playlist.Text = "É playlist do Youtube";
+            cbx_playlist.UseVisualStyleBackColor = true;
+            // 
+            // ID
+            // 
+            ID.HeaderText = "ID";
+            ID.Name = "ID";
+            ID.ReadOnly = true;
+            ID.Width = 40;
+            // 
+            // Titulo
+            // 
+            Titulo.HeaderText = "Título Música";
+            Titulo.Name = "Titulo";
+            Titulo.ReadOnly = true;
+            Titulo.Width = 550;
+            // 
+            // linkorId_video
+            // 
+            linkorId_video.HeaderText = "id_video";
+            linkorId_video.Name = "linkorId_video";
+            linkorId_video.ReadOnly = true;
+            linkorId_video.Visible = false;
+            // 
+            // Tempo
+            // 
+            Tempo.HeaderText = "Tempo";
+            Tempo.Name = "Tempo";
+            Tempo.ReadOnly = true;
+            Tempo.Width = 160;
+            // 
             // Fo_Principal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(814, 541);
+            Controls.Add(cbx_playlist);
             Controls.Add(progressBar1);
             Controls.Add(btn_excluir);
             Controls.Add(btn_addlist);
@@ -161,9 +173,10 @@
         private Button btn_addlist;
         private Button btn_excluir;
         private ProgressBar progressBar1;
+        private CheckBox cbx_playlist;
         private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn Titulo;
-        private DataGridViewTextBoxColumn Link;
+        private DataGridViewTextBoxColumn linkorId_video;
         private DataGridViewTextBoxColumn Tempo;
     }
 }

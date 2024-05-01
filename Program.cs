@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 namespace Youtube.Video.Downloader
 {
     internal static class Program
