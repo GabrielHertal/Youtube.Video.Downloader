@@ -28,26 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fo_Principal));
             txt_link = new TextBox();
             btn_download = new Button();
             Grid_musicas = new DataGridView();
-            btn_addlist = new Button();
-            btn_excluir = new Button();
-            progressBar1 = new ProgressBar();
-            cbx_playlist = new CheckBox();
             ID = new DataGridViewTextBoxColumn();
             Titulo = new DataGridViewTextBoxColumn();
             linkorId_video = new DataGridViewTextBoxColumn();
             Tempo = new DataGridViewTextBoxColumn();
+            btn_addlist = new Button();
+            btn_excluir = new Button();
+            Pbar = new ProgressBar();
+            cbx_playlist = new CheckBox();
+            cbx_host = new ComboBox();
+            cbx_chave = new ComboBox();
+            label1 = new Label();
+            label2 = new Label();
+            notifyIcon1 = new NotifyIcon(components);
             ((System.ComponentModel.ISupportInitialize)Grid_musicas).BeginInit();
             SuspendLayout();
             // 
             // txt_link
             // 
-            txt_link.Location = new Point(12, 29);
+            txt_link.Location = new Point(12, 4);
             txt_link.Name = "txt_link";
-            txt_link.Size = new Size(419, 23);
+            txt_link.Size = new Size(657, 23);
             txt_link.TabIndex = 0;
             // 
             // btn_download
@@ -75,47 +82,13 @@
             Grid_musicas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             Grid_musicas.Columns.AddRange(new DataGridViewColumn[] { ID, Titulo, linkorId_video, Tempo });
             Grid_musicas.Location = new Point(12, 121);
+            Grid_musicas.MultiSelect = false;
             Grid_musicas.Name = "Grid_musicas";
             Grid_musicas.ReadOnly = true;
             Grid_musicas.RowTemplate.Height = 25;
+            Grid_musicas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             Grid_musicas.Size = new Size(793, 334);
             Grid_musicas.TabIndex = 2;
-            // 
-            // btn_addlist
-            // 
-            btn_addlist.Location = new Point(12, 67);
-            btn_addlist.Name = "btn_addlist";
-            btn_addlist.Size = new Size(419, 35);
-            btn_addlist.TabIndex = 3;
-            btn_addlist.Text = "Adicionar a Lista";
-            btn_addlist.UseVisualStyleBackColor = true;
-            btn_addlist.Click += btn_addlist_Click;
-            // 
-            // btn_excluir
-            // 
-            btn_excluir.Location = new Point(437, 67);
-            btn_excluir.Name = "btn_excluir";
-            btn_excluir.Size = new Size(368, 35);
-            btn_excluir.TabIndex = 4;
-            btn_excluir.Text = "Excluir da Lista";
-            btn_excluir.UseVisualStyleBackColor = true;
-            // 
-            // progressBar1
-            // 
-            progressBar1.Location = new Point(12, 461);
-            progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(793, 23);
-            progressBar1.TabIndex = 5;
-            // 
-            // cbx_playlist
-            // 
-            cbx_playlist.AutoSize = true;
-            cbx_playlist.Location = new Point(448, 33);
-            cbx_playlist.Name = "cbx_playlist";
-            cbx_playlist.Size = new Size(136, 19);
-            cbx_playlist.TabIndex = 6;
-            cbx_playlist.Text = "É playlist do Youtube";
-            cbx_playlist.UseVisualStyleBackColor = true;
             // 
             // ID
             // 
@@ -145,21 +118,112 @@
             Tempo.ReadOnly = true;
             Tempo.Width = 160;
             // 
+            // btn_addlist
+            // 
+            btn_addlist.Location = new Point(12, 67);
+            btn_addlist.Name = "btn_addlist";
+            btn_addlist.Size = new Size(419, 35);
+            btn_addlist.TabIndex = 3;
+            btn_addlist.Text = "Adicionar a Lista";
+            btn_addlist.UseVisualStyleBackColor = true;
+            btn_addlist.Click += btn_addlist_Click;
+            // 
+            // btn_excluir
+            // 
+            btn_excluir.Location = new Point(437, 67);
+            btn_excluir.Name = "btn_excluir";
+            btn_excluir.Size = new Size(368, 35);
+            btn_excluir.TabIndex = 4;
+            btn_excluir.Text = "Excluir da Lista";
+            btn_excluir.UseVisualStyleBackColor = true;
+            btn_excluir.Click += btn_excluir_Click;
+            // 
+            // Pbar
+            // 
+            Pbar.Location = new Point(12, 461);
+            Pbar.Name = "Pbar";
+            Pbar.Size = new Size(793, 23);
+            Pbar.TabIndex = 5;
+            // 
+            // cbx_playlist
+            // 
+            cbx_playlist.AutoSize = true;
+            cbx_playlist.Location = new Point(675, 4);
+            cbx_playlist.Name = "cbx_playlist";
+            cbx_playlist.Size = new Size(127, 19);
+            cbx_playlist.TabIndex = 6;
+            cbx_playlist.Text = "Playlist do Youtube";
+            cbx_playlist.UseVisualStyleBackColor = true;
+            // 
+            // cbx_host
+            // 
+            cbx_host.FormattingEnabled = true;
+            cbx_host.Items.AddRange(new object[] { "1 - youtube-mp3-downloader2.p.rapidapi.com", "2 - youtube-mp3-downloader1.p.rapidapi.com" });
+            cbx_host.Location = new Point(469, 33);
+            cbx_host.Name = "cbx_host";
+            cbx_host.Size = new Size(200, 23);
+            cbx_host.TabIndex = 7;
+            // 
+            // cbx_chave
+            // 
+            cbx_chave.FormattingEnabled = true;
+            cbx_chave.Items.AddRange(new object[] { "1 - 1a0890980fmsh42c4db24ee5c99dp187015jsned15423ee5e2", "2 - 753851eb6dmsh0048fc19d4dbf58p1e9208jsnef0b7965d6f6", "3 - 4f84ec793amshcca1ecf872ad7f4p184291jsn3d3ee1b0cb1d" });
+            cbx_chave.Location = new Point(82, 33);
+            cbx_chave.Name = "cbx_chave";
+            cbx_chave.Size = new Size(200, 23);
+            cbx_chave.TabIndex = 8;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 41);
+            label1.Name = "label1";
+            label1.RightToLeft = RightToLeft.No;
+            label1.Size = new Size(64, 15);
+            label1.TabIndex = 9;
+            label1.Text = "Chave API:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(407, 41);
+            label2.Name = "label2";
+            label2.RightToLeft = RightToLeft.No;
+            label2.Size = new Size(56, 15);
+            label2.TabIndex = 10;
+            label2.Text = "Host API:";
+            // 
+            // notifyIcon1
+            // 
+            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIcon1.BalloonTipText = "Download finalizado com sucesso!";
+            notifyIcon1.BalloonTipTitle = "Youtube Mp3 Downloader";
+            notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
+            notifyIcon1.Text = "notifyIcon1";
+            notifyIcon1.Visible = true;
+            // 
             // Fo_Principal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(814, 541);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(cbx_chave);
+            Controls.Add(cbx_host);
             Controls.Add(cbx_playlist);
-            Controls.Add(progressBar1);
+            Controls.Add(Pbar);
             Controls.Add(btn_excluir);
             Controls.Add(btn_addlist);
             Controls.Add(Grid_musicas);
             Controls.Add(btn_download);
             Controls.Add(txt_link);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "Fo_Principal";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form1";
+            Text = "Youtube Mp3 Dowloader";
             ((System.ComponentModel.ISupportInitialize)Grid_musicas).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -172,11 +236,16 @@
         private DataGridView Grid_musicas;
         private Button btn_addlist;
         private Button btn_excluir;
-        private ProgressBar progressBar1;
+        private ProgressBar Pbar;
         private CheckBox cbx_playlist;
+        private ComboBox cbx_host;
+        private ComboBox cbx_chave;
+        private Label label1;
+        private Label label2;
         private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn Titulo;
         private DataGridViewTextBoxColumn linkorId_video;
         private DataGridViewTextBoxColumn Tempo;
+        private NotifyIcon notifyIcon1;
     }
 }

@@ -7,24 +7,27 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Microsoft.Extensions.Configuration;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Youtube.Video.Downloader
 {
     public partial class Fo_Principal : Form
     {
         public IConfiguration _config;
+        public string chaveapi;
+        public string hostapi;
         public Fo_Principal()
         {
             InitializeComponent();
             _config = new ConfigurationBuilder()
                 .AddJsonFile("AppSettings.json")
-                .Build();
+                .Build();           
         }
         private string LimparNomeParaArquivo(string nome)
         {
             foreach (char c in Path.GetInvalidFileNameChars())
             {
-                nome = nome.Replace(c, '_');
+                nome = nome.Replace(c, '-');
             }
             return nome;
         }
@@ -44,8 +47,38 @@ namespace Youtube.Video.Downloader
         }
         private async void Btn_download_Click(object sender, EventArgs e)
         {
-            string chaveapi = _config["ChaveApi:X-RapidAPI-Key"];
-            string hostapi = _config["HostApi:X-RapidAPI-Host"];
+            ///////////////////////////Verifica qual a chave da API esta selecionada//////////////////////////////////
+            if (cbx_chave.SelectedIndex == -1)
+            {
+                MessageBox.Show("Selecione uma ChaveAPI", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            else if (cbx_chave.SelectedIndex == 0)
+            {
+                chaveapi = _config["ChaveApi:X-RapidAPI-Key1"];
+            }
+            else if (cbx_chave.SelectedIndex == 1)
+            {
+                chaveapi = _config["ChaveApi:X-RapidAPI-Key2"];
+            }
+            else
+            {
+                chaveapi = _config["ChaveApi:X-RapidAPI-Key3"];
+            }
+            ///////////////////////////Verifica qual a Host da API esta selecionada//////////////////////////////////
+            if (cbx_host.SelectedIndex == -1)
+            {
+                MessageBox.Show("Selecione um HostAPI!", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            else if (cbx_host.SelectedIndex == 0)
+            {
+                hostapi = _config["HostApi:X-RapidAPI-Host1"];
+            }
+            else
+            {
+                hostapi = _config["HostApi:X-RapidAPI-Host2"];
+            }
             foreach (DataGridViewRow item in Grid_musicas.Rows)
             {
                 string nome = item.Cells[1].Value.ToString();
@@ -53,22 +86,23 @@ namespace Youtube.Video.Downloader
                 string nome_limpo = LimparNomeParaArquivo(nome);
                 string uri;
                 var client = new HttpClient();
-                if(hostapi == "youtube-mp3-downloader2.p.rapidapi.com")
+                //////////Verifica qual a chave da API e dependendo altera a URI que faz a requisição///////////////
+                if (hostapi == "youtube-mp3-downloader2.p.rapidapi.com")
                 {
-                     uri = ("https://youtube-mp3-downloader2.p.rapidapi.com/ytmp3/ytmp3/?url=" + _id_video);
+                    uri = ("https://youtube-mp3-downloader2.p.rapidapi.com/ytmp3/ytmp3/?url=" + _id_video);
                 }
                 else
                 {
-                     uri = ("https://youtube-mp3-download1.p.rapidapi.com/dl?id=" + _id_video);
+                    uri = ("https://youtube-mp3-download1.p.rapidapi.com/dl?id=" + _id_video);
                 }
                 var request = new HttpRequestMessage
                 {
-                    Method = HttpMethod.Get,                                                                                
-                    RequestUri = new Uri(uri),  
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(uri),
                     Headers =
                     {
-                    { "X-RapidAPI-Key", chaveapi }, 
-                    { "X-RapidAPI-Host", hostapi },    
+                    { "X-RapidAPI-Key", chaveapi },
+                    { "X-RapidAPI-Host", hostapi },
                     },
                 };
                 try
@@ -76,7 +110,8 @@ namespace Youtube.Video.Downloader
                     using var response = await client.SendAsync(request);
                     response.EnsureSuccessStatusCode();
                     var responsebody = await response.Content.ReadAsStringAsync();
-                    dynamic jsonresponse = JsonConvert.DeserializeObject<dynamic>(responsebody);                    
+                    dynamic jsonresponse = JsonConvert.DeserializeObject<dynamic>(responsebody);
+                    /////////////////Verifica qual a chave da API e qual ação deve fazer///////////////
                     if (hostapi == "youtube-mp3-downloader2.p.rapidapi.com")
                     {
                         string urlaudio = jsonresponse.dlink;
@@ -90,13 +125,13 @@ namespace Youtube.Video.Downloader
                             using (var arquivoaudio = System.IO.File.Create("Musicas/" + nome_limpo + ".mp3"))
                             {
                                 await arquivoaudio.WriteAsync(audiolink);
+                                System.Threading.Thread.Sleep(500);
                             }
                         }
                     }
+                    //////////////////API que faz o download do video abrindo o Chrome e clicando no botão////////////////////////
                     else
                     {
-                        System.Threading.Thread.Sleep(500);
-                        //////USAR QUANDO FOR USAR OUTRA API ///////////////
                         var options = new ChromeOptions();
                         if (!Directory.Exists("Musicas"))
                         {
@@ -109,7 +144,7 @@ namespace Youtube.Video.Downloader
                         {
                             driver.Navigate().GoToUrl(linkdownload);
                             var dowloadbutton = driver.FindElement(By.ClassName("dlbtn"));
-                            System.Threading.Thread.Sleep(1000);
+                            System.Threading.Thread.Sleep(1500);
                             dowloadbutton.Click();
                             System.Threading.Thread.Sleep(2500);
                         }
@@ -118,25 +153,57 @@ namespace Youtube.Video.Downloader
                 }
                 catch (HttpRequestException ex)
                 {
-                MessageBox.Show($"Erro na requisição HTTP: {ex.Message}");
-                Console.WriteLine($"Erro na requisição HTTP: {ex.Message}");
+                    MessageBox.Show($"Erro na requisição: {ex.Message}");
+                    Console.WriteLine($"Erro na requisição: {ex.Message}");
+                    return;
                 }
             }
             MessageBox.Show("Downloads finalizados com sucesso!");
             Console.WriteLine("Downloads finalizados com sucesso!");
-            Grid_musicas.Rows.Clear(); 
+            Grid_musicas.Rows.Clear();
         }
         int i = 0;
         private async void btn_addlist_Click(object sender, EventArgs e)
         {
-            string chaveapi = _config["ChaveApi:X-RapidAPI-Key"];
-            string hostapi = _config["HostApi:X-RapidAPI-Host"];
+            ///////////////////////////Verifica qual a chave da API esta selecionada//////////////////////////////////
+            if (cbx_chave.SelectedIndex == -1)
+            {
+                MessageBox.Show("Selecione uma ChaveAPI", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            else if (cbx_chave.SelectedIndex == 0)
+            {
+                chaveapi = _config["ChaveApi:X-RapidAPI-Key1"];
+            }
+            else if (cbx_chave.SelectedIndex == 1)
+            {
+                chaveapi = _config["ChaveApi:X-RapidAPI-Key2"];
+            }
+            else
+            {
+                chaveapi = _config["ChaveApi:X-RapidAPI-Key3"];
+            }
+            ///////////////////////////Verifica qual a Host da API esta selecionada//////////////////////////////////
+            if (cbx_host.SelectedIndex == -1)
+            {
+                MessageBox.Show("Selecione um HostAPI!", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            else if (cbx_host.SelectedIndex == 0)
+            {
+                hostapi = _config["HostApi:X-RapidAPI-Host1"];
+            }
+            else
+            {
+                hostapi = _config["HostApi:X-RapidAPI-Host2"];
+            }
             string link = txt_link.Text;
             if (txt_link.Text == "")
             {
                 MessageBox.Show("Informe um link para poder incluir na lista!", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
+            ///////////////////////////////////////Verifica se é uma playlist///////////////////////////////////
             if (cbx_playlist.Checked)
             {
                 string quebrastring = "https://www.youtube.com/playlist?list=";
@@ -147,10 +214,10 @@ namespace Youtube.Video.Downloader
                     Method = HttpMethod.Get,
                     RequestUri = new Uri("https://youtube138.p.rapidapi.com/playlist/videos/?id=" + id_playlist + "&hl=en&gl=US"),
                     Headers =
-                {
-                  { "X-RapidAPI-Key", chaveapi },                                       
-                  { "X-RapidAPI-Host", "youtube138.p.rapidapi.com" },      
-                },
+                    {
+                  { "X-RapidAPI-Key", chaveapi },
+                  { "X-RapidAPI-Host", "youtube138.p.rapidapi.com" },
+                    },
                 };
                 try
                 {
@@ -160,16 +227,18 @@ namespace Youtube.Video.Downloader
                     dynamic jsonresponse = JsonConvert.DeserializeObject<dynamic>(body);
                     foreach (var item in jsonresponse.contents)
                     {
-                        var id = item.index; 
+                        var id = item.index;
                         string titulo = item.video.title;
+                        string _id_video = item.video.videoId;
                         string id_video = null;
                         if (hostapi == "youtube-mp3-download1.p.rapidapi.com")
                         {
                             id_video = item.video.videoId;
                         }
+                        //////////////////Monta link para o video e adiciona na lista////////////////////////////
                         else
                         {
-                            id_video = "https://www.youtube.com/watch?v=" + id_video;
+                            id_video = "https://www.youtube.com/watch?v=" + _id_video;
                         }
                         var temp_segundos = Convert.ToDouble(item.video.lengthSeconds);
                         var minutos = TimeSpan.FromSeconds(temp_segundos);
@@ -179,10 +248,11 @@ namespace Youtube.Video.Downloader
                 }
                 catch (HttpRequestException ex)
                 {
-                    MessageBox.Show($"Erro na requisição HTTP: {ex.Message}");
-                    Console.WriteLine($"Erro na requisição HTTP: {ex.Message}");
+                    MessageBox.Show($"Erro na requisição: {ex.Message}");
+                    Console.WriteLine($"Erro na requisição: {ex.Message}");
                 }
             }
+            ////////////////////////////////////Caso não seja uma playlist////////////////////////////////////////////////////////
             else
             {
                 if (ExisteInformacaoNoGrid(link) == true)
@@ -198,8 +268,8 @@ namespace Youtube.Video.Downloader
                     Method = HttpMethod.Get,
                     RequestUri = new Uri("https://youtube138.p.rapidapi.com/video/details/?id=" + id_video + "&hl=en&gl=US"),
                     Headers =
-                    {                                           
-                        { "X-RapidAPI-Key", chaveapi }, 
+                    {
+                        { "X-RapidAPI-Key", chaveapi },
                         { "X-RapidAPI-Host", "youtube138.p.rapidapi.com" },
                     },
                 };
@@ -218,8 +288,19 @@ namespace Youtube.Video.Downloader
                 }
                 catch (HttpRequestException ex)
                 {
-                    MessageBox.Show($"Erro na requisição HTTP: {ex.Message}");
-                    Console.WriteLine($"Erro na requisição HTTP: {ex.Message}");
+                    MessageBox.Show($"Erro na requisição: {ex.Message}");
+                    Console.WriteLine($"Erro na requisição: {ex.Message}");
+                }
+            }
+        }
+        private void btn_excluir_Click(object sender, EventArgs e)
+        {
+            if (Grid_musicas.SelectedCells.Count > 0)
+            {
+                foreach (DataGridViewRow row in Grid_musicas.SelectedRows)
+                {
+                    Grid_musicas.Rows.Remove(row);
+                    i--;
                 }
             }
         }
