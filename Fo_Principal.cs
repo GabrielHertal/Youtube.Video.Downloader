@@ -23,6 +23,8 @@ namespace Youtube.Video.Downloader
                 .AddJsonFile("AppSettings.json")
                 .Build();           
         }
+        int i = 0;
+        public int j = 0;
         private string LimparNomeParaArquivo(string nome)
         {
             foreach (char c in Path.GetInvalidFileNameChars())
@@ -127,9 +129,10 @@ namespace Youtube.Video.Downloader
                                 await arquivoaudio.WriteAsync(audiolink);
                                 System.Threading.Thread.Sleep(500);
                             }
+                            Barradeprogresso();
                         }
                     }
-                    //////////////////API que faz o download do video abrindo o Chrome e clicando no botão////////////////////////
+                    //////////////////API que faz o download do video abrindo o Chrome e clicando no botão download////////////////////////
                     else
                     {
                         var options = new ChromeOptions();
@@ -148,7 +151,7 @@ namespace Youtube.Video.Downloader
                             dowloadbutton.Click();
                             System.Threading.Thread.Sleep(2500);
                         }
-                        i = 0;
+                        Barradeprogresso();
                     }
                 }
                 catch (HttpRequestException ex)
@@ -160,9 +163,11 @@ namespace Youtube.Video.Downloader
             }
             MessageBox.Show("Downloads finalizados com sucesso!");
             Console.WriteLine("Downloads finalizados com sucesso!");
+            i = 0;
+            j = 0;
+            Pbar.Value = 0;
             Grid_musicas.Rows.Clear();
         }
-        int i = 0;
         private async void btn_addlist_Click(object sender, EventArgs e)
         {
             ///////////////////////////Verifica qual a chave da API esta selecionada//////////////////////////////////
@@ -203,7 +208,7 @@ namespace Youtube.Video.Downloader
                 MessageBox.Show("Informe um link para poder incluir na lista!", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            ///////////////////////////////////////Verifica se é uma playlist///////////////////////////////////
+            ///////////////////////////////////////Caso seja uma playlist///////////////////////////////////
             if (cbx_playlist.Checked)
             {
                 string quebrastring = "https://www.youtube.com/playlist?list=";
@@ -244,12 +249,14 @@ namespace Youtube.Video.Downloader
                         var minutos = TimeSpan.FromSeconds(temp_segundos);
                         Grid_musicas.Rows.Add(id, titulo, id_video, minutos);
                         txt_link.Text = null;
+                        j++;
                     }
                 }
                 catch (HttpRequestException ex)
                 {
                     MessageBox.Show($"Erro na requisição: {ex.Message}");
                     Console.WriteLine($"Erro na requisição: {ex.Message}");
+                    return;
                 }
             }
             ////////////////////////////////////Caso não seja uma playlist////////////////////////////////////////////////////////
@@ -279,29 +286,43 @@ namespace Youtube.Video.Downloader
                     response.EnsureSuccessStatusCode();
                     var body = await response.Content.ReadAsStringAsync();
                     dynamic jsonresponse = JsonConvert.DeserializeObject<dynamic>(body);
-                    i++;
                     string titulo = jsonresponse.title;
                     var temp_segundos = Convert.ToDouble(jsonresponse.lengthSeconds);
                     var minutos = TimeSpan.FromSeconds(temp_segundos);
                     Grid_musicas.Rows.Add(i, titulo, id_video, minutos);
                     txt_link.Text = null;
+                    i++;
+                    j++;
                 }
                 catch (HttpRequestException ex)
                 {
                     MessageBox.Show($"Erro na requisição: {ex.Message}");
                     Console.WriteLine($"Erro na requisição: {ex.Message}");
+                    return;
                 }
             }
         }
         private void btn_excluir_Click(object sender, EventArgs e)
         {
-            if (Grid_musicas.SelectedCells.Count > 0)
+            if (Grid_musicas.SelectedRows.Count > 0)
             {
                 foreach (DataGridViewRow row in Grid_musicas.SelectedRows)
                 {
                     Grid_musicas.Rows.Remove(row);
                     i--;
+                    j--;
                 }
+            }
+        }
+        private void Barradeprogresso() 
+        {
+            Pbar.Minimum = 0;
+            Pbar.Maximum = j;
+            for(int  i = 0; i <= j; i++) 
+            {
+                MessageBox.Show(i.ToString());
+                Pbar.Value = i;
+                return;
             }
         }
     }

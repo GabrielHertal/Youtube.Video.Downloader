@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fo_Principal));
             txt_link = new TextBox();
@@ -46,7 +45,6 @@
             cbx_chave = new ComboBox();
             label1 = new Label();
             label2 = new Label();
-            notifyIcon1 = new NotifyIcon(components);
             ((System.ComponentModel.ISupportInitialize)Grid_musicas).BeginInit();
             SuspendLayout();
             // 
@@ -193,15 +191,6 @@
             label2.TabIndex = 10;
             label2.Text = "Host API:";
             // 
-            // notifyIcon1
-            // 
-            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIcon1.BalloonTipText = "Download finalizado com sucesso!";
-            notifyIcon1.BalloonTipTitle = "Youtube Mp3 Downloader";
-            notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
-            notifyIcon1.Text = "notifyIcon1";
-            notifyIcon1.Visible = true;
-            // 
             // Fo_Principal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -246,6 +235,5 @@
         private DataGridViewTextBoxColumn Titulo;
         private DataGridViewTextBoxColumn linkorId_video;
         private DataGridViewTextBoxColumn Tempo;
-        private NotifyIcon notifyIcon1;
     }
 }
