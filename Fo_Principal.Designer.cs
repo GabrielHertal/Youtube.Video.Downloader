@@ -33,10 +33,6 @@
             txt_link = new TextBox();
             btn_download = new Button();
             Grid_musicas = new DataGridView();
-            ID = new DataGridViewTextBoxColumn();
-            Titulo = new DataGridViewTextBoxColumn();
-            linkorId_video = new DataGridViewTextBoxColumn();
-            Tempo = new DataGridViewTextBoxColumn();
             btn_addlist = new Button();
             btn_excluir = new Button();
             Pbar = new ProgressBar();
@@ -45,6 +41,10 @@
             cbx_chave = new ComboBox();
             label1 = new Label();
             label2 = new Label();
+            ID = new DataGridViewTextBoxColumn();
+            Titulo = new DataGridViewTextBoxColumn();
+            linkorId_video = new DataGridViewTextBoxColumn();
+            Tempo = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)Grid_musicas).BeginInit();
             SuspendLayout();
             // 
@@ -87,34 +87,6 @@
             Grid_musicas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             Grid_musicas.Size = new Size(793, 334);
             Grid_musicas.TabIndex = 2;
-            // 
-            // ID
-            // 
-            ID.HeaderText = "ID";
-            ID.Name = "ID";
-            ID.ReadOnly = true;
-            ID.Width = 40;
-            // 
-            // Titulo
-            // 
-            Titulo.HeaderText = "Título Música";
-            Titulo.Name = "Titulo";
-            Titulo.ReadOnly = true;
-            Titulo.Width = 550;
-            // 
-            // linkorId_video
-            // 
-            linkorId_video.HeaderText = "id_video";
-            linkorId_video.Name = "linkorId_video";
-            linkorId_video.ReadOnly = true;
-            linkorId_video.Visible = false;
-            // 
-            // Tempo
-            // 
-            Tempo.HeaderText = "Tempo";
-            Tempo.Name = "Tempo";
-            Tempo.ReadOnly = true;
-            Tempo.Width = 160;
             // 
             // btn_addlist
             // 
@@ -190,6 +162,33 @@
             label2.Size = new Size(56, 15);
             label2.TabIndex = 10;
             label2.Text = "Host API:";
+            // 
+            // ID
+            // 
+            ID.HeaderText = "ID";
+            ID.Name = "ID";
+            ID.ReadOnly = true;
+            ID.Width = 40;
+            // 
+            // Titulo
+            // 
+            Titulo.HeaderText = "Título Música";
+            Titulo.Name = "Titulo";
+            Titulo.ReadOnly = true;
+            Titulo.Width = 550;
+            // 
+            // linkorId_video
+            // 
+            linkorId_video.HeaderText = "id_video";
+            linkorId_video.Name = "linkorId_video";
+            linkorId_video.ReadOnly = true;
+            // 
+            // Tempo
+            // 
+            Tempo.HeaderText = "Tempo";
+            Tempo.Name = "Tempo";
+            Tempo.ReadOnly = true;
+            Tempo.Width = 160;
             // 
             // Fo_Principal
             // 
