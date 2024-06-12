@@ -182,6 +182,7 @@
             linkorId_video.HeaderText = "id_video";
             linkorId_video.Name = "linkorId_video";
             linkorId_video.ReadOnly = true;
+            linkorId_video.Visible = false;
             // 
             // Tempo
             // 
